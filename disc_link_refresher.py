@@ -1,6 +1,7 @@
 import requests
 import time
 import argparse
+import html
 
 def refresh_cdn_link(expired_links: list[str], auth_token : str) -> list[dict]:
     '''
@@ -59,10 +60,12 @@ def chunk_list(to_chunk : list, chunk_size = 50):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("links-file", help = "path to a text file containing the CDN links you want to refresh, one on each line")
+    # parser.add_argument("links-file", help = "path to a text file containing the CDN links you want to refresh, one on each line")
     parser.add_argument("-t", "--token", action = "store", help = "Discord API authentication token")
     args = parser.parse_args()
-    print(args.token)
+    test_link_list = [html.unescape("https://cdn.discordapp.com/attachments/1424247441405771958/1424247677830435007/A_Grim_Hunt-1_.png?ex=6a5a5443&amp;is=6a5902c3&amp;hm=601a5f08f402ef47e2e9c514bc5a427f15a03fe8f2869aad55a920f78ba47b26&amp;")]
+    refreshed = refresh_cdn_link(test_link_list, args.token)
+    print(refreshed[0]["refreshed"])
 
 if __name__ == "__main__":
     main()
