@@ -18,6 +18,9 @@ def refresh_cdn_links(expired_links: list[str], auth_token : str) -> dict:
     '''
     post_request_url = "https://discord.com/api/v10/attachments/refresh-urls"
 
+    if not auth_token:
+            auth_token = os.environ["DISCORD_TOKEN"]
+
     headers = {
         "Authorization": f"Bot {auth_token}",
         "Content-Type": "application/json",
@@ -98,9 +101,6 @@ def main():
     parser.add_argument("-lf", "--link-file", action = "store", help = "a file to refresh and replace the Discord CDN links in")
     parser.add_argument("-t", "--token", action = "store", help = "Discord API authentication token")
     args = parser.parse_args()
-
-    if not args.token:
-        args.token = os.environ["DISCORD_TOKEN"]
 
     if args.link_file:
         refresh_links_in_file(args.link_file)
