@@ -51,6 +51,10 @@ def refresh_cdn_links(expired_links: list[str], auth_token : str) -> list[dict]:
 
     return refreshed_old_pairs
 
+def chunk_list(to_chunk : list, chunk_size = 50):
+    for i in range(0, len(to_chunk), chunk_size):
+        yield to_chunk[i: i + chunk_size]
+
 def refresh_cdn_link(expired_link : str, auth_token : str) -> str:
     """
     Refresh a single Discord CDN link.
@@ -62,21 +66,32 @@ def refresh_cdn_link(expired_link : str, auth_token : str) -> str:
     :return: Refreshed, working version of the expired link
     :rtype: str
     """
-    
+
     refreshed = refresh_cdn_links([expired_link], auth_token)
     return refreshed[0]["refreshed"]
 
-    
-def chunk_list(to_chunk : list, chunk_size = 50):
-    for i in range(0, len(to_chunk), chunk_size):
-        yield to_chunk[i: i + chunk_size]
+def refresh_links_in_file(file_path : str):
+    # Stub
+    # Remember to do html escapes, just in case
+    return
+
 
 
 def main():
     parser = argparse.ArgumentParser()
     # parser.add_argument("links-file", help = "path to a text file containing the CDN links you want to refresh, one on each line")
+    parser.add_argument("-l", "--link", action = "store", help = "single Discord cdn link to refresh")
+    parser.add_argument("-lf", "--link-file", action = "store", help = "a file of links for to refresh and replace")
     parser.add_argument("-t", "--token", action = "store", help = "Discord API authentication token")
     args = parser.parse_args()
+
+    if args.link_file:
+        refresh_links_in_file(args.link_file)
+
+    if args.link:
+        print(refresh_cdn_link(args.link))
+
+    # Debug
     test_link_list = [html.unescape("https://cdn.discordapp.com/attachments/1424247441405771958/1424247677830435007/A_Grim_Hunt-1_.png?ex=6a5a5443&amp;is=6a5902c3&amp;hm=601a5f08f402ef47e2e9c514bc5a427f15a03fe8f2869aad55a920f78ba47b26&amp;")]
     refreshed = refresh_cdn_links(test_link_list, args.token)
     print(refreshed[0]["refreshed"])
