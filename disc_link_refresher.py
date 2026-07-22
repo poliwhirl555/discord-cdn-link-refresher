@@ -2,6 +2,8 @@ import requests
 import time
 import argparse
 import html
+import os
+
 
 def refresh_cdn_links(expired_links: list[str], auth_token : str) -> list[dict]:
     '''
@@ -84,6 +86,9 @@ def main():
     parser.add_argument("-lf", "--link-file", action = "store", help = "a file of links for to refresh and replace")
     parser.add_argument("-t", "--token", action = "store", help = "Discord API authentication token")
     args = parser.parse_args()
+
+    if not args.token:
+        args.token = os.environ["DISCORD_TOKEN"]
 
     if args.link_file:
         refresh_links_in_file(args.link_file)
