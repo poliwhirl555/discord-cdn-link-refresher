@@ -3,7 +3,7 @@ import time
 import argparse
 import html
 
-def refresh_cdn_link(expired_links: list[str], auth_token : str) -> list[dict]:
+def refresh_cdn_links(expired_links: list[str], auth_token : str) -> list[dict]:
     '''
     Uses the Discord API to get new versions of expired CDN links. Returns a list of dicts of format {"original": expired_link, "refreshed": refreshed_link}.
     
@@ -51,6 +51,20 @@ def refresh_cdn_link(expired_links: list[str], auth_token : str) -> list[dict]:
 
     return refreshed_old_pairs
 
+def refresh_cdn_link(expired_link : str, auth_token : str) -> str:
+    """
+    Refresh a single Discord CDN link.
+    
+    :param expired_link: the expired Discord CDN link
+    :type expired_link: str
+    :param auth_token: Authentication token for the Discord API
+    :type auth_token: str
+    :return: Refreshed, working version of the expired link
+    :rtype: str
+    """
+    
+    refreshed = refresh_cdn_links([expired_link], auth_token)
+    return refreshed[0]["refreshed"]
 
     
 def chunk_list(to_chunk : list, chunk_size = 50):
@@ -64,7 +78,7 @@ def main():
     parser.add_argument("-t", "--token", action = "store", help = "Discord API authentication token")
     args = parser.parse_args()
     test_link_list = [html.unescape("https://cdn.discordapp.com/attachments/1424247441405771958/1424247677830435007/A_Grim_Hunt-1_.png?ex=6a5a5443&amp;is=6a5902c3&amp;hm=601a5f08f402ef47e2e9c514bc5a427f15a03fe8f2869aad55a920f78ba47b26&amp;")]
-    refreshed = refresh_cdn_link(test_link_list, args.token)
+    refreshed = refresh_cdn_links(test_link_list, args.token)
     print(refreshed[0]["refreshed"])
 
 if __name__ == "__main__":
