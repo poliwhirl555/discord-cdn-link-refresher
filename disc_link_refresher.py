@@ -94,9 +94,8 @@ def refresh_links_in_file(file_path : str):
 
 def main():
     parser = argparse.ArgumentParser()
-    # parser.add_argument("links-file", help = "path to a text file containing the CDN links you want to refresh, one on each line")
-    parser.add_argument("-l", "--link", action = "store", help = "single Discord cdn link to refresh")
-    parser.add_argument("-lf", "--link-file", action = "store", help = "a file of links for to refresh and replace")
+    parser.add_argument("-l", "--link", action = "store", help = "single Discord CDN link to refresh")
+    parser.add_argument("-lf", "--link-file", action = "store", help = "a file to refresh and replace the Discord CDN links in")
     parser.add_argument("-t", "--token", action = "store", help = "Discord API authentication token")
     args = parser.parse_args()
 
