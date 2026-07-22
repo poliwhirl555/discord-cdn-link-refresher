@@ -70,7 +70,7 @@ def refresh_cdn_link(expired_link : str, auth_token : str) -> str:
     """
 
     refreshed = refresh_cdn_links([expired_link], auth_token)
-    return refreshed[0]["refreshed"]
+    return next(iter(refreshed.values()))
 
 def refresh_cdn_links_no_old(expired_links: list[str], auth_token : str) -> list[str]:
     """
@@ -83,7 +83,7 @@ def refresh_cdn_links_no_old(expired_links: list[str], auth_token : str) -> list
     :return: A list of the new, refreshed links as strings
     :rtype: list[str]
     """
-    return refresh_cdn_links(expired_links, auth_token).values()
+    return list(refresh_cdn_links(expired_links, auth_token).values())
 
 def refresh_links_in_file(file_path : str):
     # Stub
@@ -111,7 +111,7 @@ def main():
     # Debug
     test_link_list = [html.unescape("https://cdn.discordapp.com/attachments/1424247441405771958/1424247677830435007/A_Grim_Hunt-1_.png?ex=6a5a5443&amp;is=6a5902c3&amp;hm=601a5f08f402ef47e2e9c514bc5a427f15a03fe8f2869aad55a920f78ba47b26&amp;")]
     refreshed = refresh_cdn_links(test_link_list, args.token)
-    print(refreshed[0]["refreshed"])
+    print(next(iter(refreshed.values())))
 
 if __name__ == "__main__":
     main()
