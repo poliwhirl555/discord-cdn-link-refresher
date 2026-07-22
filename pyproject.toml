@@ -7,3 +7,18 @@ requires-python = ">=3.13"
 dependencies = [
     "requests>=2.34.2",
 ]
+
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["disc_link_refresher.py"]
+
+[project.scripts]
+d-cdnlr = "disc_link_refresher:main"
+
+[project.urls]
+Homepage = "https://pypi.org/project/discord-archiver-media-archiver/"
+Repository = "https://github.com/poliwhirl555/discord-archiver-media-archiver"
+Issues = "https://github.com/poliwhirl555/discord-archiver-media-archiver/issues"
