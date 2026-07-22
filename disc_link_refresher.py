@@ -5,16 +5,16 @@ import html
 import os
 
 
-def refresh_cdn_links(expired_links: list[str], auth_token : str) -> list[dict]:
+def refresh_cdn_links(expired_links: list[str], auth_token : str) -> dict:
     '''
-    Uses the Discord API to get new versions of expired CDN links. Returns a list of dicts of format {"original": expired_link, "refreshed": refreshed_link}.
+    Uses the Discord API to get new versions of expired CDN links. Returns a dict of format {expired_link : refreshed_link}.
     
     :param expired_links: List of expired Discord CDN links
     :type expired_links: list[str]
     :param auth_token: Authentication token for the Discord API
     :type auth_token: str
-    :return: list of dicts of format {"original": expired_link, "refreshed": refreshed_link}
-    :rtype: list[dict]
+    :return: a dict of format {expired_link : refreshed_link}
+    :rtype: dict
     '''
     post_request_url = "https://discord.com/api/v10/attachments/refresh-urls"
 
@@ -51,7 +51,7 @@ def refresh_cdn_links(expired_links: list[str], auth_token : str) -> list[dict]:
 
         refreshed_old_pairs.extend(returned_data["refreshed_urls"])
 
-    return refreshed_old_pairs
+    return { link_pair["original"] : link_pair["refreshed"] for link_pair in refreshed_old_pairs}
 
 def chunk_list(to_chunk : list, chunk_size = 50):
     for i in range(0, len(to_chunk), chunk_size):
@@ -71,6 +71,19 @@ def refresh_cdn_link(expired_link : str, auth_token : str) -> str:
 
     refreshed = refresh_cdn_links([expired_link], auth_token)
     return refreshed[0]["refreshed"]
+
+def refresh_cdn_links_no_old(expired_links: list[str], auth_token : str) -> list[str]:
+    """
+    Use Discord API to get refreshed cdn links from expired cdn links. Returns only the new links with no association to the old ones.
+    
+    :param expired_links: List of expired Discord CDN links
+    :type expired_links: list[str]
+    :param auth_token: Authentication token for the Discord API
+    :type auth_token: str
+    :return: A list of the new, refreshed links as strings
+    :rtype: list[str]
+    """
+    return refresh_cdn_links(expired_links, auth_token).values()
 
 def refresh_links_in_file(file_path : str):
     # Stub
