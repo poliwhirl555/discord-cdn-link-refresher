@@ -100,8 +100,7 @@ def main():
     parser.add_argument("-l", "--link", action = "store", help = "single Discord CDN link to refresh")
     parser.add_argument("-lf", "--link-file", action = "store", help = "a file to refresh and replace the Discord CDN links in")
     parser.add_argument("-t", "--token", action = "store", help = "Discord API authentication token")
-    # Can change to any input directory, actually, with working directory being default
-    parser.add_argument("-d", "--download", action = "store-true", default = False, help = "download the media of any refreshed links to the working directory")
+    parser.add_argument("-d", "--download", action = "store", const = os.getcwd(), default = None, help = "download the media of any refreshed links to given directory, or the working directory if not specified")
     args = parser.parse_args()
 
     if args.link_file:
