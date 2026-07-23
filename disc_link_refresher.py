@@ -114,7 +114,7 @@ def disambiguate_media_name(used_names : set[str], original_name : str):
     return name
 
 
-def refresh_cdn_link(expired_link : str, auth_token : str, download: str | None = None) -> str:
+def refresh_cdn_link(expired_link : str, auth_token : str, save_location: str | None = None) -> str:
     """
     Refresh a single Discord CDN link.
     
@@ -126,10 +126,10 @@ def refresh_cdn_link(expired_link : str, auth_token : str, download: str | None 
     :rtype: str
     """
 
-    refreshed = refresh_cdn_links([expired_link], auth_token, download)
+    refreshed = refresh_cdn_links([expired_link], auth_token, save_location)
     return next(iter(refreshed.values()))
 
-def refresh_cdn_links_no_old(expired_links: list[str], auth_token : str, download: str | None = None) -> list[str]:
+def refresh_cdn_links_no_old(expired_links: list[str], auth_token : str, save_location: str | None = None) -> list[str]:
     """
     Use Discord API to get refreshed cdn links from expired cdn links. Returns only the new links with no association to the old ones.
     
@@ -140,11 +140,13 @@ def refresh_cdn_links_no_old(expired_links: list[str], auth_token : str, downloa
     :return: A list of the new, refreshed links as strings
     :rtype: list[str]
     """
-    return list(refresh_cdn_links(expired_links, auth_token).values(), download)
+    return list(refresh_cdn_links(expired_links, auth_token).values(), save_location)
 
-def refresh_links_in_file(file_path : str):
+def refresh_links_in_file(file_path : str, html : bool = False, save_location: str | None = None):
     # Stub
     # Remember to do html escapes, just in case
+    # Need to figure out how to pair arguments in the argument parser
+
     return
 
 
