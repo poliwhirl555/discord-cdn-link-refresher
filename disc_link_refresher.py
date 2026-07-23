@@ -142,10 +142,12 @@ def refresh_cdn_links_no_old(expired_links: list[str], auth_token : str, save_lo
     """
     return list(refresh_cdn_links(expired_links, auth_token).values(), save_location)
 
-def refresh_links_in_file(file_path : str, html : bool = False, save_location: str | None = None):
+def refresh_links_in_file(file_path : str, save_location: str | None = None, html : bool = False):
     # Stub
     # Remember to do html escapes, just in case
     # Need to figure out how to pair arguments in the argument parser
+
+    
 
     return
 
@@ -155,12 +157,13 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-l", "--link", action = "store", help = "single Discord CDN link to refresh")
     parser.add_argument("-lf", "--link-file", action = "store", help = "a file to refresh and replace the Discord CDN links in")
+    parser.add_argument("-h", "--html", action = "store_true", default = False, help = "used with -lf or --link-file to indicate the argument file is in html and links need to be unescaped. Does nothing otherwise")
     parser.add_argument("-t", "--token", action = "store", help = "Discord API authentication token")
     parser.add_argument("-d", "--download", action = "store", nargs = "?", const = os.getcwd(), default = None, help = "download the media of any refreshed links to given directory, or the working directory if not specified")
     args = parser.parse_args()
 
     if args.link_file:
-        refresh_links_in_file(args.link_file, args.download)
+        refresh_links_in_file(args.link_file, args.download, args.html)
 
     if args.link:
         print(refresh_cdn_link(args.link, args.download))
