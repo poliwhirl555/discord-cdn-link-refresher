@@ -8,6 +8,8 @@ This tool aims to fix that by giving you a Python library and CLI tool that allo
 
 ## Installation
 
+Finish
+
 ## How to get a bot token
 
 1. Login with your Discord account at the [Discord Developer Portal](https://discord.com/developers/applications)
