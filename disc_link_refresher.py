@@ -7,13 +7,13 @@ import re
 from pathlib import Path
 
 
-def refresh_cdn_links(expired_links: list[str], auth_token : str, save_location: str | None = None) -> dict:
+def refresh_cdn_links(expired_links: list[str], auth_token : str = "", save_location: str | None = None) -> dict:
     '''
     Uses the Discord API to get new versions of expired CDN links. Returns a dict of format {expired_link : refreshed_link}.
     
     :param expired_links: List of expired Discord CDN links
     :type expired_links: list[str]
-    :param auth_token: Authentication token for the Discord API
+    :param auth_token: Authentication token for the Discord API. Defaults to environmental variable DISCORD_TOKEN if none provided.
     :type auth_token: str
     :return: a dict of format {expired_link : refreshed_link}
     :rtype: dict
@@ -114,13 +114,13 @@ def disambiguate_media_name(used_names : set[str], original_name : str):
     return name
 
 
-def refresh_cdn_link(expired_link : str, auth_token : str, save_location: str | None = None) -> str:
+def refresh_cdn_link(expired_link : str, auth_token : str = "", save_location: str | None = None) -> str:
     """
     Refresh a single Discord CDN link.
     
     :param expired_link: the expired Discord CDN link
     :type expired_link: str
-    :param auth_token: Authentication token for the Discord API
+    :param auth_token: Authentication token for the Discord API. Defaults to environmental variable DISCORD_TOKEN if none provided.
     :type auth_token: str
     :return: Refreshed, working version of the expired link
     :rtype: str
@@ -129,18 +129,18 @@ def refresh_cdn_link(expired_link : str, auth_token : str, save_location: str | 
     refreshed = refresh_cdn_links([expired_link], auth_token, save_location)
     return next(iter(refreshed.values()))
 
-def refresh_cdn_links_no_old(expired_links: list[str], auth_token : str, save_location: str | None = None) -> list[str]:
+def refresh_cdn_links_no_old(expired_links: list[str], auth_token : str = "", save_location: str | None = None) -> list[str]:
     """
     Use Discord API to get refreshed cdn links from expired cdn links. Returns only the new links with no association to the old ones.
     
     :param expired_links: List of expired Discord CDN links
     :type expired_links: list[str]
-    :param auth_token: Authentication token for the Discord API
+    :param auth_token: Authentication token for the Discord API. Defaults to environmental variable DISCORD_TOKEN if none provided.
     :type auth_token: str
     :return: A list of the new, refreshed links as strings
     :rtype: list[str]
     """
-    return list(refresh_cdn_links(expired_links, auth_token).values(), save_location)
+    return list(refresh_cdn_links(expired_links, auth_token, save_location).values())
 
 def refresh_links_in_file(file_path : str, save_location: str | None = None, is_html : bool = False):
 
@@ -226,9 +226,13 @@ def main():
     # refreshed = refresh_cdn_links(test_link_list, args.token, args.download)
     # print(next(iter(refreshed.values())))
 
-    fetch_links_in_file("archive_(349) Test Chat Gif Discord_2026-07-20.html", "links-in-file", True)
-    refresh_links_in_file("archive_(349) Test Chat Gif Discord_2026-07-20.html", is_html = True)
-    fetch_links_in_file("refreshed-archive_(349) Test Chat Gif Discord_2026-07-20.html", "links-in-file2", True)
+    # fetch_links_in_file("archive_(349) Test Chat Gif Discord_2026-07-20.html", "links-in-file", True)
+    # refresh_links_in_file("archive_(349) Test Chat Gif Discord_2026-07-20.html", is_html = True)
+    # fetch_links_in_file("refreshed-archive_(349) Test Chat Gif Discord_2026-07-20.html", "links-in-file2", True)
+
+    links = fetch_links_in_file("archive_(349) Test Chat Gif Discord_2026-07-20.html", True)
+    refreshed = refresh_cdn_links_no_old(links)
+    print(refreshed)
 
 
 if __name__ == "__main__":
