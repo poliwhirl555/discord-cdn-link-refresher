@@ -144,13 +144,20 @@ def refresh_cdn_links_no_old(expired_links: list[str], auth_token : str, save_lo
 
 def refresh_links_in_file(file_path : str, save_location: str | None = None, is_html : bool = False):
 
-    with open(file_path, "r") as file, open(file_path + "-refreshed", "w") as out:
-        cdn_link_pattern = cdn_link_pattern = re.compile(r"https?://(?:cdn|media)\.discordapp\.(?:com|net)/attachments/[^\s\"\']")
+    file_path_as_Path = Path(file_path)
+    out_file_name = "refreshed-" + file_path_as_Path.name
+
+    out_path = file_path_as_Path.parent / out_file_name
+
+    with open(file_path, "r", encoding = "utf-8") as file, open(out_path, "w", encoding = "utf-8") as out:
+        cdn_link_pattern = cdn_link_pattern = re.compile(r"https?://(?:cdn|media)\.discordapp\.(?:com|net)/attachments/[^\s\"\']*")
 
         links_already_done = dict()
         out_line = ""
 
         for line in file:
+            out_line = line
+
             if is_html:
                 line = html.unescape(line)
 
@@ -160,21 +167,22 @@ def refresh_links_in_file(file_path : str, save_location: str | None = None, is_
                 already_done = links_already_done.get(link)
 
                 if not already_done:
-                    refreshed_link = refresh_cdn_link(link)
+                    refreshed_link = refresh_cdn_link(link, None, save_location)
                     links_already_done[link] = refreshed_link
-                    download_links([refreshed_link], save_location)
                     already_done = refreshed_link
 
                 if is_html:
                     link = html.escape(link)
                     already_done = html.escape(already_done)
                 
-                out_line = line.replace(link, already_done)
+                out_line = out_line.replace(link, already_done)
 
-        out.write(out_line) 
+            out.write(out_line) 
+
+        
 
 def fetch_links_in_file(file_path : str, save_location : str | None = None, is_html : bool = False):
-    cdn_link_pattern = cdn_link_pattern = re.compile(r"https?://(?:cdn|media)\.discordapp\.(?:com|net)/attachments/[^\s\"\']")
+    cdn_link_pattern = cdn_link_pattern = re.compile(r"https?://(?:cdn|media)\.discordapp\.(?:com|net)/attachments/[^\s\"\']*")
 
     found_links = []
     already_inserted = set()
@@ -201,9 +209,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-l", "--link", action = "store", help = "single Discord CDN link to refresh")
     parser.add_argument("-lf", "--link-file", action = "store", help = "a file to refresh and replace the Discord CDN links in")
-    parser.add_argument("-h", "--html", action = "store_true", default = False, help = "used with -lf or --link-file to indicate the argument file is in html and links need to be unescaped. Does nothing otherwise")
+    parser.add_argument("-ht", "--html", action = "store_true", default = False, help = "used with -lf or --link-file to indicate the argument file is in html and links need to be unescaped. Does nothing otherwise")
     parser.add_argument("-t", "--token", action = "store", help = "Discord API authentication token")
     parser.add_argument("-d", "--download", action = "store", nargs = "?", const = os.getcwd(), default = None, help = "download the media of any refreshed links to given directory, or the working directory if not specified")
+    # Add verbosity option
     args = parser.parse_args()
 
     if args.link_file:
@@ -213,9 +222,14 @@ def main():
         print(refresh_cdn_link(args.link, args.download))
 
     # Debug
-    test_link_list = [html.unescape("https://cdn.discordapp.com/attachments/1424247441405771958/1424247677830435007/A_Grim_Hunt-1_.png?ex=6a5a5443&amp;is=6a5902c3&amp;hm=601a5f08f402ef47e2e9c514bc5a427f15a03fe8f2869aad55a920f78ba47b26&amp;")]
-    refreshed = refresh_cdn_links(test_link_list, args.token, args.download)
+    # test_link_list = [html.unescape("https://cdn.discordapp.com/attachments/1424247441405771958/1424247677830435007/A_Grim_Hunt-1_.png?ex=6a5a5443&amp;is=6a5902c3&amp;hm=601a5f08f402ef47e2e9c514bc5a427f15a03fe8f2869aad55a920f78ba47b26&amp;")]
+    # refreshed = refresh_cdn_links(test_link_list, args.token, args.download)
     # print(next(iter(refreshed.values())))
+
+    fetch_links_in_file("archive_(349) Test Chat Gif Discord_2026-07-20.html", "links-in-file", True)
+    refresh_links_in_file("archive_(349) Test Chat Gif Discord_2026-07-20.html", is_html = True)
+    fetch_links_in_file("refreshed-archive_(349) Test Chat Gif Discord_2026-07-20.html", "links-in-file2", True)
+
 
 if __name__ == "__main__":
     main()
