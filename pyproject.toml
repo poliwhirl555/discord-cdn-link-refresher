@@ -19,6 +19,6 @@ packages = ["disc_link_refresher.py"]
 d-cdnlr = "disc_link_refresher:main"
 
 [project.urls]
-Homepage = "https://pypi.org/project/discord-archiver-media-archiver/"
-Repository = "https://github.com/poliwhirl555/discord-archiver-media-archiver"
-Issues = "https://github.com/poliwhirl555/discord-archiver-media-archiver/issues"
+Homepage = "https://pypi.org/project/discord-cdn-link-refresher/"
+Repository = "https://github.com/poliwhirl555/discord-cdn-link-refresher"
+Issues = "https://github.com/poliwhirl555/discord-cdn-link-refresher/issues"
