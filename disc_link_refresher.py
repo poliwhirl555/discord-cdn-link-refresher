@@ -173,6 +173,29 @@ def refresh_links_in_file(file_path : str, save_location: str | None = None, is_
 
         out.write(out_line) 
 
+def fetch_links_in_file(file_path : str, save_location : str | None = None, is_html : bool = False):
+    cdn_link_pattern = cdn_link_pattern = re.compile(r"https?://(?:cdn|media)\.discordapp\.(?:com|net)/attachments/[^\s\"\']")
+
+    found_links = []
+    already_inserted = set()
+
+    with open(file_path, "r") as file:
+        for line in file:
+            if is_html:
+                line = html.unescape(line)
+            links = re.findall(cdn_link_pattern, line)
+            for link in links:
+                if not link in already_inserted:
+                    found_links.append(link)
+                    already_inserted.add(link)
+
+    if save_location:
+        with open(save_location, "w") as out:
+            for link in found_links:
+                out.write(link + "\n")
+
+    return found_links
+
 
 def main():
     parser = argparse.ArgumentParser()
