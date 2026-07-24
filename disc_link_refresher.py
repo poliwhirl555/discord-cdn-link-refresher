@@ -9,7 +9,7 @@ from pathlib import Path
 
 def refresh_cdn_links(expired_links: list[str], auth_token : str = "", download_location : str = "", verbosity : int = 0) -> dict:
     '''
-    Uses the Discord API to get new versions of expired CDN links. Returns a dict of format {expired_link : refreshed_link}.
+    Uses the Discord API to get new versions of expired CDN links. Returns a dict of format {expired_link \: refreshed_link}.
 
     :param expired_links: List of expired Discord CDN links
     :type expired_links: list[str]
@@ -17,9 +17,10 @@ def refresh_cdn_links(expired_links: list[str], auth_token : str = "", download_
     :type auth_token: str
     :param download_location: if not empty, location to download and save the contents of the refreshed link
     :type download_location: str
-    :param verbosity: level of verbosity to print outputs in console when running. Default is 0 meaning no prints, >0 prints the refreshed links as they are acquired
+    :param verbosity: level of verbosity to print outputs in console when running. 
+        Default is 0 meaning no prints, 1 prints the refreshed links as they are acquired, 2 prints both the old links alongside the refreshed links
     :type verbosity: int
-    :return: a dict of format {expired_link : refreshed_link}
+    :return: a dict of format {expired_link \: refreshed_link}
     :rtype: dict
     '''
 
@@ -60,6 +61,11 @@ def refresh_cdn_links(expired_links: list[str], auth_token : str = "", download_
         returned_data = r.json()
 
         refreshed_old_pairs.extend(returned_data["refreshed_urls"])
+
+        if verbosity == 1:
+            print(returned_data["refreshed_urls"][0]["refreshed"])
+        elif verbosity == 2:
+            print(returned_data["refreshed_urls"])
 
     return_dict = { link_pair["original"] : link_pair["refreshed"] for link_pair in refreshed_old_pairs}
 
@@ -128,7 +134,8 @@ def refresh_cdn_link(expired_link : str, auth_token : str = "", download_locatio
     :type auth_token: str
     :param download_location: if not empty, location to download and save the contents of the refreshed link
     :type download_location: str
-    :param verbosity: level of verbosity to print outputs in console when running. Default is 0 meaning no prints, >0 prints the refreshed links as they are acquired
+    :param verbosity: level of verbosity to print outputs in console when running. 
+        Default is 0 meaning no prints, 1 prints the refreshed links as they are acquired, 2 prints both the old links alongside the refreshed links
     :type verbosity: int
     :return: Refreshed, working version of the expired link
     :rtype: str
@@ -147,7 +154,8 @@ def refresh_cdn_links_no_old(expired_links: list[str], auth_token : str = "", do
     :type auth_token: str
     :param download_location: if not empty, location to download and save the contents of the refreshed links
     :type download_location: str
-    :param verbosity: level of verbosity to print outputs in console when running. Default is 0 meaning no prints, >0 prints the refreshed links as they are acquired
+    :param verbosity: level of verbosity to print outputs in console when running. 
+        Default is 0 meaning no prints, 1 prints the refreshed links as they are acquired, 2 prints both the old links alongside the refreshed links
     :type verbosity: int
     :return: A list of the new, refreshed links as strings
     :rtype: list[str]
@@ -166,7 +174,8 @@ def refresh_links_in_file(file_path : str, auth_token : str = "", download_locat
     :type download_location: str
     :param is_html: indicates to the function whether the file is an html file, to know if unescaping the links is necessary
     :type is_html: bool
-    :param verbosity: level of verbosity to print outputs in console when running. Default is 0 meaning no prints, >0 prints the refreshed links as they are acquired
+    :param verbosity: level of verbosity to print outputs in console when running. 
+        Default is 0 meaning no prints, 1 prints the refreshed links as they are acquired, 2 prints both the old links alongside the refreshed links
     :type verbosity: int
     """
 
