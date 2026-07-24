@@ -15,6 +15,8 @@ def refresh_cdn_links(expired_links: list[str], auth_token : str = "", save_loca
     :type expired_links: list[str]
     :param auth_token: Authentication token for the Discord API. Defaults to environmental variable DISCORD_TOKEN if none provided.
     :type auth_token: str
+    :param save_location: if not None, location to download and save the contents of the refreshed link
+    :type save_location: str | None
     :return: a dict of format {expired_link : refreshed_link}
     :rtype: dict
     '''
@@ -123,6 +125,8 @@ def refresh_cdn_link(expired_link : str, auth_token : str = "", save_location: s
     :param auth_token: Authentication token for the Discord API. Defaults to environmental variable DISCORD_TOKEN if none provided.
     :type auth_token: str
     :return: Refreshed, working version of the expired link
+    :param save_location: if not None, location to download and save the contents of the refreshed link
+    :type save_location: str | None
     :rtype: str
     """
 
@@ -137,12 +141,24 @@ def refresh_cdn_links_no_old(expired_links: list[str], auth_token : str = "", sa
     :type expired_links: list[str]
     :param auth_token: Authentication token for the Discord API. Defaults to environmental variable DISCORD_TOKEN if none provided.
     :type auth_token: str
+    :param save_location: if not None, location to download and save the contents of the refreshed links
+    :type save_location: str | None
     :return: A list of the new, refreshed links as strings
     :rtype: list[str]
     """
     return list(refresh_cdn_links(expired_links, auth_token, save_location).values())
 
 def refresh_links_in_file(file_path : str, save_location: str | None = None, is_html : bool = False):
+    """
+    Refresh all links in a given file and create a copy of it with all expired links replaced by the new links.
+    
+    :param file_path: path of file with links to be refreshed
+    :type file_path: str
+    :param save_location: if not None, location to download and save the contents of the refreshed links
+    :type save_location: str | None
+    :param is_html: indicates to the function whether the file is an html file, to know if unescaping the links is necessary
+    :type is_html: bool
+    """
 
     file_path_as_Path = Path(file_path)
     out_file_name = "refreshed-" + file_path_as_Path.name
@@ -181,7 +197,19 @@ def refresh_links_in_file(file_path : str, save_location: str | None = None, is_
 
         
 
-def fetch_links_in_file(file_path : str, save_location : str | None = None, is_html : bool = False):
+def fetch_links_in_file(file_path : str, save_location : str | None = None, is_html : bool = False) -> list[str]:
+    """
+    Utility function to find all the Discord cdn links in a given file
+    
+    :param file_path: path of file to search for links in
+    :type file_path: str
+    :param save_location: location to save a file listing all the found links
+    :type save_location: str | None
+    :param is_html: indicates to the function whether the file is an html file, to know if unescaping the links is necessary
+    :type is_html: bool
+    :return: a list of the links found in the file as strings
+    :rtype: list[str]
+    """
     cdn_link_pattern = cdn_link_pattern = re.compile(r"https?://(?:cdn|media)\.discordapp\.(?:com|net)/attachments/[^\s\"\']*")
 
     found_links = []
@@ -232,7 +260,7 @@ def main():
 
     links = fetch_links_in_file("archive_(349) Test Chat Gif Discord_2026-07-20.html", True)
     refreshed = refresh_cdn_links_no_old(links)
-    print(refreshed)
+    # print(refreshed)
 
 
 if __name__ == "__main__":
