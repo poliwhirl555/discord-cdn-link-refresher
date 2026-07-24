@@ -7,7 +7,7 @@ import re
 from pathlib import Path
 
 
-def refresh_cdn_links(expired_links: list[str], auth_token : str = "", save_location: str | None = None) -> dict:
+def refresh_cdn_links(expired_links: list[str], auth_token : str = "", save_location: str = "") -> dict:
     '''
     Uses the Discord API to get new versions of expired CDN links. Returns a dict of format {expired_link : refreshed_link}.
     
@@ -15,14 +15,14 @@ def refresh_cdn_links(expired_links: list[str], auth_token : str = "", save_loca
     :type expired_links: list[str]
     :param auth_token: Authentication token for the Discord API. Defaults to environmental variable DISCORD_TOKEN if none provided.
     :type auth_token: str
-    :param save_location: if not None, location to download and save the contents of the refreshed link
-    :type save_location: str | None
+    :param save_location: if not empty, location to download and save the contents of the refreshed link
+    :type save_location: str
     :return: a dict of format {expired_link : refreshed_link}
     :rtype: dict
     '''
 
     if not auth_token:
-                auth_token = os.environ["DISCORD_TOKEN"]
+        auth_token = os.environ["DISCORD_TOKEN"]
 
     post_request_url = "https://discord.com/api/v10/attachments/refresh-urls"
 
@@ -116,7 +116,7 @@ def disambiguate_media_name(used_names : set[str], original_name : str):
     return name
 
 
-def refresh_cdn_link(expired_link : str, auth_token : str = "", save_location: str | None = None) -> str:
+def refresh_cdn_link(expired_link : str, auth_token : str = "", save_location: str = "") -> str:
     """
     Refresh a single Discord CDN link.
     
@@ -125,15 +125,15 @@ def refresh_cdn_link(expired_link : str, auth_token : str = "", save_location: s
     :param auth_token: Authentication token for the Discord API. Defaults to environmental variable DISCORD_TOKEN if none provided.
     :type auth_token: str
     :return: Refreshed, working version of the expired link
-    :param save_location: if not None, location to download and save the contents of the refreshed link
-    :type save_location: str | None
+    :param save_location: if not empty, location to download and save the contents of the refreshed link
+    :type save_location: str
     :rtype: str
     """
 
     refreshed = refresh_cdn_links([expired_link], auth_token, save_location)
     return next(iter(refreshed.values()))
 
-def refresh_cdn_links_no_old(expired_links: list[str], auth_token : str = "", save_location: str | None = None) -> list[str]:
+def refresh_cdn_links_no_old(expired_links: list[str], auth_token : str = "", save_location: str = "") -> list[str]:
     """
     Use Discord API to get refreshed cdn links from expired cdn links. Returns only the new links with no association to the old ones.
     
@@ -141,21 +141,21 @@ def refresh_cdn_links_no_old(expired_links: list[str], auth_token : str = "", sa
     :type expired_links: list[str]
     :param auth_token: Authentication token for the Discord API. Defaults to environmental variable DISCORD_TOKEN if none provided.
     :type auth_token: str
-    :param save_location: if not None, location to download and save the contents of the refreshed links
-    :type save_location: str | None
+    :param save_location: if not empty, location to download and save the contents of the refreshed links
+    :type save_location: str
     :return: A list of the new, refreshed links as strings
     :rtype: list[str]
     """
     return list(refresh_cdn_links(expired_links, auth_token, save_location).values())
 
-def refresh_links_in_file(file_path : str, save_location: str | None = None, is_html : bool = False):
+def refresh_links_in_file(file_path : str, save_location: str = "", is_html : bool = False):
     """
     Refresh all links in a given file and create a copy of it with all expired links replaced by the new links.
     
     :param file_path: path of file with links to be refreshed
     :type file_path: str
-    :param save_location: if not None, location to download and save the contents of the refreshed links
-    :type save_location: str | None
+    :param save_location: if not empty, location to download and save the contents of the refreshed links
+    :type save_location: str
     :param is_html: indicates to the function whether the file is an html file, to know if unescaping the links is necessary
     :type is_html: bool
     """
@@ -197,16 +197,16 @@ def refresh_links_in_file(file_path : str, save_location: str | None = None, is_
 
         
 
-def fetch_links_in_file(file_path : str, save_location : str | None = None, is_html : bool = False) -> list[str]:
+def fetch_links_in_file(file_path : str, is_html : bool = False, save_location : str = "") -> list[str]:
     """
     Utility function to find all the Discord cdn links in a given file
     
     :param file_path: path of file to search for links in
     :type file_path: str
-    :param save_location: location to save a file listing all the found links
-    :type save_location: str | None
     :param is_html: indicates to the function whether the file is an html file, to know if unescaping the links is necessary
     :type is_html: bool
+    :param save_location: location to save a file listing all the found links
+    :type save_location: str
     :return: a list of the links found in the file as strings
     :rtype: list[str]
     """
@@ -239,7 +239,7 @@ def main():
     parser.add_argument("-lf", "--link-file", action = "store", help = "a file to refresh and replace the Discord CDN links in")
     parser.add_argument("-ht", "--html", action = "store_true", default = False, help = "used with -lf or --link-file to indicate the argument file is in html and links need to be unescaped. Does nothing otherwise")
     parser.add_argument("-t", "--token", action = "store", help = "Discord API authentication token")
-    parser.add_argument("-d", "--download", action = "store", nargs = "?", const = os.getcwd(), default = None, help = "download the media of any refreshed links to given directory, or the working directory if not specified")
+    parser.add_argument("-d", "--download", action = "store", nargs = "?", const = os.getcwd(), default = "", help = "download the media of any refreshed links to given directory, or the working directory if not specified")
     # Add verbosity option
     args = parser.parse_args()
 
@@ -258,7 +258,7 @@ def main():
     # refresh_links_in_file("archive_(349) Test Chat Gif Discord_2026-07-20.html", is_html = True)
     # fetch_links_in_file("refreshed-archive_(349) Test Chat Gif Discord_2026-07-20.html", "links-in-file2", True)
 
-    links = fetch_links_in_file("archive_(349) Test Chat Gif Discord_2026-07-20.html", True)
+    links = fetch_links_in_file("archive_(349) Test Chat Gif Discord_2026-07-20.html", is_html = True)
     refreshed = refresh_cdn_links_no_old(links)
     # print(refreshed)
 
