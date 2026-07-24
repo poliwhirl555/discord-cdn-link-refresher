@@ -193,7 +193,7 @@ def refresh_links_in_file(file_path : str, auth_token : str = "", download_locat
                 already_done = links_already_done.get(link)
 
                 if not already_done:
-                    refreshed_link = refresh_cdn_link(link, auth_token, download_location)
+                    refreshed_link = refresh_cdn_link(link, auth_token, download_location, verbosity)
                     links_already_done[link] = refreshed_link
                     already_done = refreshed_link
 
@@ -268,9 +268,9 @@ def main():
     # refresh_links_in_file("archive_(349) Test Chat Gif Discord_2026-07-20.html", is_html = True)
     # fetch_links_in_file("refreshed-archive_(349) Test Chat Gif Discord_2026-07-20.html", "links-in-file2", True)
 
-    links = fetch_links_in_file("archive_(349) Test Chat Gif Discord_2026-07-20.html", is_html = True)
-    refreshed = refresh_cdn_links_no_old(links)
-    print(args.verbosity)
+    # links = fetch_links_in_file("archive_(349) Test Chat Gif Discord_2026-07-20.html", is_html = True)
+    # refreshed = refresh_cdn_links_no_old(links)
+    # print(args.verbosity)
     # print(refreshed)
 
 
