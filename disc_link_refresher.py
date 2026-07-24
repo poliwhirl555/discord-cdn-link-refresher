@@ -142,15 +142,36 @@ def refresh_cdn_links_no_old(expired_links: list[str], auth_token : str, save_lo
     """
     return list(refresh_cdn_links(expired_links, auth_token).values(), save_location)
 
-def refresh_links_in_file(file_path : str, save_location: str | None = None, html : bool = False):
-    # Stub
-    # Remember to do html escapes, just in case
-    # Need to figure out how to pair arguments in the argument parser
+def refresh_links_in_file(file_path : str, save_location: str | None = None, is_html : bool = False):
 
-    
+    with open(file_path, "r") as file, open(file_path + "-refreshed", "w") as out:
+        cdn_link_pattern = cdn_link_pattern = re.compile(r"https?://(?:cdn|media)\.discordapp\.(?:com|net)/attachments/[^\s\"\']")
 
-    return
+        links_already_done = dict()
+        out_line = ""
 
+        for line in file:
+            if is_html:
+                line = html.unescape(line)
+
+            found_links = re.findall(cdn_link_pattern, line)
+
+            for link in found_links:
+                already_done = links_already_done.get(link)
+
+                if not already_done:
+                    refreshed_link = refresh_cdn_link(link)
+                    links_already_done[link] = refreshed_link
+                    download_links([refreshed_link], save_location)
+                    already_done = refreshed_link
+
+                if is_html:
+                    link = html.escape(link)
+                    already_done = html.escape(already_done)
+                
+                out_line = line.replace(link, already_done)
+
+        out.write(out_line) 
 
 
 def main():
