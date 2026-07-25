@@ -285,19 +285,21 @@ def main():
                 select = input()
 
             if select == "1":
-                link_to_refresh
+                link_to_refresh = ""
                 while True:
                     print("Please enter your link (You may enter \"b\" to go back at any time):")
                     link_to_refresh = input()
-                    if not link_to_refresh.lower() == "b":
+                    if link_to_refresh.lower() == "b":
                         break
+                    print("Refreshed link:")
                     print(refresh_cdn_link(link_to_refresh, args.token))
+                    
 
             if select == "2":
                 while True:
                     print("Please enter the name of your file. It should be in the same directory as this exe. (You may enter \"b\" to go back at any time):")
                     file_to_refresh = input()
-                    if not file_to_refresh.lower() == "b":
+                    if file_to_refresh.lower() == "b":
                         break
                     refresh_links_in_file(file_to_refresh, args.token, is_html  = True, verbosity = 2)
 
