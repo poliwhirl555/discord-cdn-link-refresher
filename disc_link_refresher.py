@@ -4,6 +4,7 @@ import argparse
 import html
 import os
 import re
+import sys
 from pathlib import Path
 
 
@@ -267,6 +268,10 @@ def main():
 
     if args.link:
         print(refresh_cdn_link(args.link, args.token, args.download, 0))
+
+    if len(sys.argv) == 1:
+        # Add some sort of user input here.
+        return
 
     # Debug
     # test_link_list = [html.unescape("https://cdn.discordapp.com/attachments/1424247441405771958/1424247677830435007/A_Grim_Hunt-1_.png?ex=6a5a5443&amp;is=6a5902c3&amp;hm=601a5f08f402ef47e2e9c514bc5a427f15a03fe8f2869aad55a920f78ba47b26&amp;")]

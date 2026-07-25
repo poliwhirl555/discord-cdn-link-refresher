@@ -8,7 +8,7 @@ This tool aims to fix that by giving you a Python library and CLI tool that allo
 
 ## Installation
 
-Finish
+Give pip installation instructions here.
 
 ## How to get a bot token
 
