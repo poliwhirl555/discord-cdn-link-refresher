@@ -258,7 +258,7 @@ def main():
     parser.add_argument("-l", "--link", action = "store", help = "single Discord CDN link to refresh")
     parser.add_argument("-lf", "--link-file", action = "store", help = "a file to refresh and replace the Discord CDN links in")
     parser.add_argument("-ht", "--html", action = "store_true", default = False, help = "used with -lf or --link-file to indicate the argument file is in html and links need to be unescaped. Does nothing otherwise")
-    parser.add_argument("-t", "--token", action = "store", help = "Discord API authentication token")
+    parser.add_argument("-t", "--token", action = "store", default = "", help = "Discord API authentication token")
     parser.add_argument("-d", "--download", action = "store", nargs = "?", const = os.getcwd(), default = "", help = "download the media of any refreshed links to given directory, or the working directory if not specified")
     parser.add_argument("-v", "--verbosity", action = "count", default = 0, help = "print refreshed links as they arrive (helps with knowing that the program didn't freeze for large lists)")
     args = parser.parse_args()
@@ -271,7 +271,39 @@ def main():
 
     if len(sys.argv) == 1:
         # Add some sort of user input here.
-        return
+        while args.token == "":
+            token = input("Please enter your authentication token:")
+            args.token = token
+
+        while True:
+            select = ""
+            while not select in ["1", "2", "3"]:
+                print("What would you like to do? Please enter the number associated with the option of your choice.")
+                print("[1] Refresh a single link")
+                print("[2] Refresh a file of links")
+                print("[3] Quit this program")
+                select = input()
+
+            if select == "1":
+                link_to_refresh
+                while True:
+                    print("Please enter your link (You may enter \"b\" to go back at any time):")
+                    link_to_refresh = input()
+                    if not link_to_refresh.lower() == "b":
+                        break
+                    print(refresh_cdn_link(link_to_refresh, args.token))
+
+            if select == "2":
+                while True:
+                    print("Please enter the name of your file. It should be in the same directory as this exe. (You may enter \"b\" to go back at any time):")
+                    file_to_refresh = input()
+                    if not file_to_refresh.lower() == "b":
+                        break
+                    refresh_links_in_file(file_to_refresh, args.token, is_html  = True, verbosity = 2)
+
+            if select == "3":
+                sys.exit()
+
 
     # Debug
     # test_link_list = [html.unescape("https://cdn.discordapp.com/attachments/1424247441405771958/1424247677830435007/A_Grim_Hunt-1_.png?ex=6a5a5443&amp;is=6a5902c3&amp;hm=601a5f08f402ef47e2e9c514bc5a427f15a03fe8f2869aad55a920f78ba47b26&amp;")]
