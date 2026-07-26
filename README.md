@@ -52,16 +52,17 @@ options:
   -lf, --link-file LINK_FILE
                         a file to refresh and replace the Discord CDN links in
   -ht, --html           used with -lf or --link-file to indicate the argument file is in html and links need to be unescaped. Does nothing otherwise
-  -t, --token TOKEN     Discord API authentication token. Defaults to environmental variable \"DISCORD_TOKEN\" if none provided
+  -t, --token TOKEN     Discord API authentication token. Defaults to environmental variable "DISCORD_TOKEN" if none provided
   -d, --download [DOWNLOAD]
                         download the media of any refreshed links to given directory, or the working directory if not specified
-  -v, --verbosity       print refreshed links as they arrive (helps with knowing that the program didn't freeze for large lists)
+  -v, --verbosity       print refreshed links as they arrive (helps with knowing that the program didn't freeze for large lists). -vv to show both the old and the
+                        new links at the same time.
 ```
 
 ### Examples
 
 #### Refresh a single link
- ```cmd
+ ```
 dclr -l "https://cdn.discordapp.com/attachments/1424247441405771958/1424247677830435007/A_Grim_Hunt-1_.png?ex=6a5a5443&is=6a5902c3&hm=601a5f08f402ef47e2e9c514bc5a427f15a03fe8f2869aad55a920f78ba47b26&" -t "your token here"
  ```
 
@@ -69,9 +70,22 @@ dclr -l "https://cdn.discordapp.com/attachments/1424247441405771958/142424767783
 ```cmd
 dclr -lf "links.txt" -t "your token here"
 ```
-## Notes
 
-If you get tired of entering your token every time, add it to the environmental variables via one of these three ways, depending on your operating system and the program will automatically use it if the token field is blank:
+#### Refresh all links in an HTML file
+
+```
+dclr -lf "archive_(349) Test Chat Gif Discord_2026-07-20.html" -ht -t "your token here"
+```
+
+#### Refresh and download the contents of a link to a specific folder
+
+```
+dclr -lf "archive_(349) Test Chat Gif Discord_2026-07-20.html" -ht -t "your token here" -d "specific-folder"
+```
+
+#### Note
+
+If you get tired of entering your token every time, add it to the environmental variables via one of these three ways, depending on your operating system and the program will automatically use it if the token field is blank. (Note: Each of these ways aside from one is temporary. If you restart your terminal, the environmental variable will go away.)
 
 ```bash
 # Linux - bash/zsh
@@ -89,4 +103,91 @@ $env:DISCORD_TOKEN = "your-token-here"
 ```cmd
 # Windows - cmd
 set DISCORD_TOKEN=your-token-here
+```
+
+## Python Library
+```python
+import disc_link_refresher
+
+def refresh_cdn_links(expired_links: list[str], auth_token : str = "", download_location : str = "", verbosity : int = 0) -> dict:
+    '''
+    Uses the Discord API to get new versions of expired CDN links. Returns a dict of format {expired_link \: refreshed_link}.
+
+    :param expired_links: List of expired Discord CDN links
+    :type expired_links: list[str]
+    :param auth_token: Authentication token for the Discord API. Defaults to environmental variable DISCORD_TOKEN if none provided.
+    :type auth_token: str
+    :param download_location: if not empty, location to download and save the contents of the refreshed link
+    :type download_location: str
+    :param verbosity: level of verbosity to print outputs in console when running. 
+        Default is 0 meaning no prints, 1 prints the refreshed links as they are acquired, 2 prints both the old links alongside the refreshed links
+    :type verbosity: int
+    :return: a dict of format {expired_link \: refreshed_link}
+    :rtype: dict
+    '''
+
+def refresh_cdn_link(expired_link : str, auth_token : str = "", download_location: str = "", verbosity : int = 0) -> str:
+    """
+    Refresh a single Discord CDN link.
+    
+    :param expired_link: the expired Discord CDN link
+    :type expired_link: str
+    :param auth_token: Authentication token for the Discord API. Defaults to environmental variable DISCORD_TOKEN if none provided.
+    :type auth_token: str
+    :param download_location: if not empty, location to download and save the contents of the refreshed link
+    :type download_location: str
+    :param verbosity: level of verbosity to print outputs in console when running. 
+        Default is 0 meaning no prints, 1 prints the refreshed links as they are acquired, 2 prints both the old links alongside the refreshed links
+    :type verbosity: int
+    :return: Refreshed, working version of the expired link
+    :rtype: str
+    """
+
+def refresh_cdn_links_no_old(expired_links: list[str], auth_token : str = "", download_location: str = "", verbosity = 0) -> list[str]:
+    """
+    Use Discord API to get refreshed cdn links from expired cdn links. Returns only the new links with no association to the old ones.
+    
+    :param expired_links: List of expired Discord CDN links
+    :type expired_links: list[str]
+    :param auth_token: Authentication token for the Discord API. Defaults to environmental variable DISCORD_TOKEN if none provided.
+    :type auth_token: str
+    :param download_location: if not empty, location to download and save the contents of the refreshed links
+    :type download_location: str
+    :param verbosity: level of verbosity to print outputs in console when running. 
+        Default is 0 meaning no prints, 1 prints the refreshed links as they are acquired, 2 prints both the old links alongside the refreshed links
+    :type verbosity: int
+    :return: A list of the new, refreshed links as strings
+    :rtype: list[str]
+    """
+
+def refresh_links_in_file(file_path : str, auth_token : str = "", download_location: str = "", is_html : bool = False, verbosity : int = 0):
+    """
+    Refresh all links in a given file and create a copy of it with all expired links replaced by the new links.
+    
+    :param file_path: path of file with links to be refreshed
+    :type file_path: str
+    :param auth_token: Authentication token for the Discord API. Defaults to environmental variable DISCORD_TOKEN if none provided.
+    :type auth_token: str
+    :param download_location: if not empty, location to download and save the contents of the refreshed links
+    :type download_location: str
+    :param is_html: indicates to the function whether the file is an html file, to know if unescaping the links is necessary
+    :type is_html: bool
+    :param verbosity: level of verbosity to print outputs in console when running. 
+        Default is 0 meaning no prints, 1 prints the refreshed links as they are acquired, 2 prints both the old links alongside the refreshed links
+    :type verbosity: int
+    """
+
+def fetch_links_in_file(file_path : str, is_html : bool = False, save_location : str = "") -> list[str]:
+    """
+    Utility function to find all the Discord cdn links in a given file
+    
+    :param file_path: path of file to search for links in
+    :type file_path: str
+    :param is_html: indicates to the function whether the file is an html file, to know if unescaping the links is necessary
+    :type is_html: bool
+    :param save_location: location to save a file listing all the found links
+    :type save_location: str
+    :return: a list of the links found in the file as strings
+    :rtype: list[str]
+    """
 ```

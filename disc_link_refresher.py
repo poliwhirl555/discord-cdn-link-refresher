@@ -260,7 +260,7 @@ def main():
     parser.add_argument("-ht", "--html", action = "store_true", default = False, help = "used with -lf or --link-file to indicate the argument file is in html and links need to be unescaped. Does nothing otherwise")
     parser.add_argument("-t", "--token", action = "store", default = "", help = "Discord API authentication token. Defaults to environmental variable \"DISCORD_TOKEN\" if none provided")
     parser.add_argument("-d", "--download", action = "store", nargs = "?", const = os.getcwd(), default = "", help = "download the media of any refreshed links to given directory, or the working directory if not specified")
-    parser.add_argument("-v", "--verbosity", action = "count", default = 0, help = "print refreshed links as they arrive (helps with knowing that the program didn't freeze for large lists)")
+    parser.add_argument("-v", "--verbosity", action = "count", default = 0, help = "print refreshed links as they arrive (helps with knowing that the program didn't freeze for large lists). -vv to show both the old and the new links at the same time.")
     args = parser.parse_args()
 
     if args.link_file:
@@ -269,8 +269,7 @@ def main():
     if args.link:
         print(refresh_cdn_link(args.link, args.token, args.download, 0))
 
-    if len(sys.argv) == 1:
-        # Add some sort of user input here.
+    if len(sys.argv) == 1: # Only the script name, no other arguments
         while args.token == "":
             token = input("Please enter your authentication token:")
             args.token = token
