@@ -52,7 +52,7 @@ options:
   -lf, --link-file LINK_FILE
                         a file to refresh and replace the Discord CDN links in
   -ht, --html           used with -lf or --link-file to indicate the argument file is in html and links need to be unescaped. Does nothing otherwise
-  -t, --token TOKEN     Discord API authentication token
+  -t, --token TOKEN     Discord API authentication token. Defaults to environmental variable \"DISCORD_TOKEN\" if none provided
   -d, --download [DOWNLOAD]
                         download the media of any refreshed links to given directory, or the working directory if not specified
   -v, --verbosity       print refreshed links as they arrive (helps with knowing that the program didn't freeze for large lists)
@@ -67,7 +67,7 @@ dclr -l "https://cdn.discordapp.com/attachments/1424247441405771958/142424767783
 
 #### Refresh all links in a file
 ```cmd
-dclr -lf "links.txt" -t "your token here
+dclr -lf "links.txt" -t "your token here"
 ```
 ## Notes
 
