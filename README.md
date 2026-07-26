@@ -27,6 +27,7 @@ Give pip installation instructions here.
 ## Usage
 
 
+## Notes
 
 If you get tired of entering your token every time, add it to the environmental variables via one of these three ways, depending on your operating system and the program will automatically use it if the token field is blank:
 
