@@ -8,7 +8,24 @@ This tool aims to fix that by giving you a Python library and CLI tool that allo
 
 ## Installation
 
-Give pip installation instructions here.
+### Option 1
+
+1. Download the latest version of Python from [python.org](https://www.python.org/downloads/)
+
+2. Install with the following command
+```cmd
+python -m pip install discord-cdn-link-refresher
+```
+
+3. Get a bot authentication token from Discord. (See instructions below)
+
+### Option 2
+
+1. Go to the Releases section the side of the Github page.
+
+2. Download the latest compiled exe version
+
+3. Get a bot authentication token from Discord. (See instructions below)
 
 ## How to get a bot token
 
@@ -26,7 +43,32 @@ Give pip installation instructions here.
 
 ## Usage
 
+```cmd
+usage: dclr [-h] [-l LINK] [-lf LINK_FILE] [-ht] [-t TOKEN] [-d [DOWNLOAD]] [-v]
 
+options:
+  -h, --help            show this help message and exit
+  -l, --link LINK       single Discord CDN link to refresh
+  -lf, --link-file LINK_FILE
+                        a file to refresh and replace the Discord CDN links in
+  -ht, --html           used with -lf or --link-file to indicate the argument file is in html and links need to be unescaped. Does nothing otherwise
+  -t, --token TOKEN     Discord API authentication token
+  -d, --download [DOWNLOAD]
+                        download the media of any refreshed links to given directory, or the working directory if not specified
+  -v, --verbosity       print refreshed links as they arrive (helps with knowing that the program didn't freeze for large lists)
+```
+
+### Examples
+
+#### Refresh a single link
+ ```cmd
+dclr -l "https://cdn.discordapp.com/attachments/1424247441405771958/1424247677830435007/A_Grim_Hunt-1_.png?ex=6a5a5443&is=6a5902c3&hm=601a5f08f402ef47e2e9c514bc5a427f15a03fe8f2869aad55a920f78ba47b26&" -t "your token here"
+ ```
+
+#### Refresh all links in a file
+```cmd
+dclr -lf "links.txt" -t "your token here
+```
 ## Notes
 
 If you get tired of entering your token every time, add it to the environmental variables via one of these three ways, depending on your operating system and the program will automatically use it if the token field is blank:

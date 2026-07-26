@@ -16,7 +16,7 @@ build-backend = "hatchling.build"
 packages = ["disc_link_refresher.py"]
 
 [project.scripts]
-d-cdnlr = "disc_link_refresher:main"
+dclr = "disc_link_refresher:main"
 
 [project.urls]
 Homepage = "https://pypi.org/project/discord-cdn-link-refresher/"
