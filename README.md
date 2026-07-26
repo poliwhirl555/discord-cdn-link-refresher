@@ -191,3 +191,5 @@ def fetch_links_in_file(file_path : str, is_html : bool = False, save_location :
     :rtype: list[str]
     """
 ```
+
+## Changelog
