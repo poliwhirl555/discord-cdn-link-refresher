@@ -5,6 +5,7 @@ import html
 import os
 import re
 import sys
+import pyperclip
 from pathlib import Path
 
 
@@ -290,9 +291,12 @@ def main():
                     link_to_refresh = input()
                     if link_to_refresh.lower() == "b":
                         break
+                    refreshed_link = refresh_cdn_link(link_to_refresh, args.token)
                     print("Refreshed link:")
-                    print(refresh_cdn_link(link_to_refresh, args.token))
-                    
+                    print(refreshed_link)
+                    # As the exe on Windows automatically opens in a console terminal without copy and paste capability, this is necessary
+                    pyperclip.copy(refreshed_link)
+                    print("The refreshed link has been copied to your clipboard.")
 
             if select == "2":
                 while True:
