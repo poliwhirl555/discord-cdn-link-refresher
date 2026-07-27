@@ -1,6 +1,6 @@
 # Discord Media Link Refresher
 
-Discord media links expire after 24 hours when used outside the Discord website or app. This usually isn't a problem as links are automatically refreshed when using the app, but if someone where to archive a chat, either through a archival tool like [Discord Archiver](https://github.com/rroy676/Discord-Archiver/) or through Discord's [Requesting a Copy of Your Data](https://support.discord.com/hc/en-us/articles/360004027692-Requesting-a-Copy-of-your-Data), then the links and thus the media in those chats will either expire quickly or already be expired. 
+Discord CDN media links expire after 24 hours when used outside the Discord website or app. This usually isn't a problem as links are automatically refreshed when using the app, but if someone where to archive a chat, either through a archival tool like [Discord Archiver](https://github.com/rroy676/Discord-Archiver/) or through Discord's [Requesting a Copy of Your Data](https://support.discord.com/hc/en-us/articles/360004027692-Requesting-a-Copy-of-your-Data), then the links and thus the media in those chats will either expire quickly or already be expired. 
 
 There are some tools that let you refresh the links, but they work through complicated processes or have you rely on someone else's bot and thus might allow for data capture of your media. They're also in different languages that aren't Python, with a more complicated installation and setup process.
 
