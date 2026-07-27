@@ -294,7 +294,7 @@ def main():
                     refreshed_link = refresh_cdn_link(link_to_refresh, args.token)
                     print("Refreshed link:")
                     print(refreshed_link)
-                    # As the exe on Windows automatically opens in a console terminal without copy and paste capability, this is necessary
+                    # As the exe on Windows automatically opens in a console terminal without highlight and copy capability, this is necessary
                     pyperclip.copy(refreshed_link)
                     print("The refreshed link has been copied to your clipboard.")
 
