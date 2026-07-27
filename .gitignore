@@ -12,3 +12,4 @@ wheels/
 # Others
 .env
 downloads/
+disc_link_refresher.*/
