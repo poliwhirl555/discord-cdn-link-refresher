@@ -193,3 +193,7 @@ def fetch_links_in_file(file_path : str, is_html : bool = False, save_location :
 ```
 
 ## Changelog
+
+### V 1.0.0
+
+Initial release.

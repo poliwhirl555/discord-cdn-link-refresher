@@ -305,21 +305,5 @@ def main():
             if select == "3":
                 sys.exit()
 
-
-    # Debug
-    # test_link_list = [html.unescape("https://cdn.discordapp.com/attachments/1424247441405771958/1424247677830435007/A_Grim_Hunt-1_.png?ex=6a5a5443&amp;is=6a5902c3&amp;hm=601a5f08f402ef47e2e9c514bc5a427f15a03fe8f2869aad55a920f78ba47b26&amp;")]
-    # refreshed = refresh_cdn_links(test_link_list, args.token, args.download)
-    # print(next(iter(refreshed.values())))
-
-    # fetch_links_in_file("archive_(349) Test Chat Gif Discord_2026-07-20.html", "links-in-file", True)
-    # refresh_links_in_file("archive_(349) Test Chat Gif Discord_2026-07-20.html", is_html = True)
-    # fetch_links_in_file("refreshed-archive_(349) Test Chat Gif Discord_2026-07-20.html", "links-in-file2", True)
-
-    # links = fetch_links_in_file("archive_(349) Test Chat Gif Discord_2026-07-20.html", is_html = True)
-    # refreshed = refresh_cdn_links_no_old(links)
-    # print(args.verbosity)
-    # print(refreshed)
-
-
 if __name__ == "__main__":
     main()
