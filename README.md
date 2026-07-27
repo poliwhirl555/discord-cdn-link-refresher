@@ -197,3 +197,7 @@ def fetch_links_in_file(file_path : str, is_html : bool = False, save_location :
 ### V 1.0.0
 
 Initial release.
+
+### V 1.0.1
+
+Added description on PyPi
