@@ -192,6 +192,10 @@ def fetch_links_in_file(file_path : str, is_html : bool = False, save_location :
     """
 ```
 
+## Note
+
+For some reason if you've scrolled all the way to the end, and found this package useful for you in some way, please star or watch or say something in Discussions. Not for the clout, but just because it's nice to know for sure that something I spent time on to make was useful to someone out there aside from me.
+
 ## Changelog
 
 ### V 1.0.0
