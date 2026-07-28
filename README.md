@@ -25,6 +25,8 @@ python -m pip install discord-cdn-link-refresher
 
 2. Download the latest compiled exe version
 
+3. (For file) Copy and paste the exe into the same folder as the file with the links you wish to refresh.
+
 3. Get a bot authentication token from Discord. (See instructions below)
 
 ## How to get a bot token
