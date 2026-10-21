@@ -128,7 +128,7 @@ wheels = [
 
 [[package]]
 name = "discord-cdn-link-refresher"
-version = "1.0.1"
+version = "1.0.2"
 source = { editable = "." }
 dependencies = [
     { name = "pyperclip" },
