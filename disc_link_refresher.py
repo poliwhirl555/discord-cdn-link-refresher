@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 def refresh_cdn_links(expired_links: list[str], auth_token : str = "", download_location : str = "", verbosity : int = 0) -> dict:
-    '''
+    """
     Uses the Discord API to get new versions of expired CDN links. Returns a dict of format {expired_link \: refreshed_link}.
 
     :param expired_links: List of expired Discord CDN links
@@ -24,7 +24,7 @@ def refresh_cdn_links(expired_links: list[str], auth_token : str = "", download_
     :type verbosity: int
     :return: a dict of format {expired_link \: refreshed_link}
     :rtype: dict
-    '''
+    """
 
     if not auth_token:
         auth_token = os.environ["DISCORD_TOKEN"]
