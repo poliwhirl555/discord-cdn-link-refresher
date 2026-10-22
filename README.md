@@ -206,4 +206,8 @@ Initial release.
 
 ### V 1.0.1
 
-Added description in toml for PyPi
+Added description in toml for PyPi.
+
+### V 1.0.2
+
+Updated Python certif library to counteract eMudhra certificate compromise.
