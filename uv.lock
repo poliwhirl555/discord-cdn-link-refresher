@@ -131,12 +131,14 @@ name = "discord-cdn-link-refresher"
 version = "1.0.2"
 source = { editable = "." }
 dependencies = [
+    { name = "nuitka" },
     { name = "pyperclip" },
     { name = "requests" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "nuitka", specifier = ">=4.3.1" },
     { name = "pyperclip", specifier = ">=1.11.0" },
     { name = "requests", specifier = ">=2.34.2" },
 ]
@@ -149,6 +151,12 @@ sdist = { url = "https://files.pythonhosted.org/packages/f5/08/8eea9d4b8302028f3
 wheels = [
     { url = "https://files.pythonhosted.org/packages/58/a2/bb081bab032533a855d44de1d56f8e8426114ff1ba5d1f07a438a0a654f8/idna-3.20-py3-none-any.whl", hash = "sha256:ab7ae7122974553370f0bdb919e1a960b2cd1bc1ef0276416d896db81c14582c", size = 69583, upload-time = "2026-09-17T14:11:03.168Z" },
 ]
+
+[[package]]
+name = "nuitka"
+version = "4.3.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/da/0f/db5cfdebf906a6de141bfdadcd72a7417ba710ba9c9d307be185a69a7c8d/nuitka-4.3.1.tar.gz", hash = "sha256:b9c87a694acc424cfffa06abf149fddbdfa85f6daac998df67411b5f4269df0f", size = 4771037, upload-time = "2026-10-17T16:34:00.545Z" }
 
 [[package]]
 name = "pyperclip"

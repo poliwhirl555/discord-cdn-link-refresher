@@ -5,6 +5,7 @@ description = "A simple CLI program and Python Library for refreshing expired Di
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "nuitka>=4.3.1",
     "pyperclip>=1.11.0",
     "requests>=2.34.2",
 ]
